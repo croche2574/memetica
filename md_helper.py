@@ -19,19 +19,22 @@ class MoondreamHelper:
         answer_emb = text_encoder(
             torch.tensor([[answer_tokens]], device=self.model.device),
             self.model.text,
-        ).squeeze(0)
-        return answer_emb
+        )
+        return torch.flatten(answer_emb)
 
-    def gen_query_embed(self, text: str):
-        question_tokens = self.model.tokenizer.encode(text).ids
-        question_emb = text_encoder(
-            torch.tensor([[question_tokens]], device=self.model.device),
-            self.model.text,
-        ).squeeze(0)
-        return question_emb
+    def gen_query_embed(self, query: str | Image):
+        if isinstance(query, str):
+            question_tokens = self.model.tokenizer.encode(query).ids
+            question_emb = text_encoder(
+                torch.tensor([[question_tokens]], device=self.model.device),
+                self.model.text,
+            )
+            return torch.flatten(question_emb)
+        else:
+            return torch.flatten(self.model._run_vision_encoder(query))
 
     def gen_image_embed(self, image: Image):
-        return self.model._run_vision_encoder(image)
+        return torch.flatten(self.model._run_vision_encoder(image))
 
     def encode_image(self, image: Image | torch.Tensor): # Accepts the reconstructed vector from DB created by method above this.
         if image.type() == Image:
