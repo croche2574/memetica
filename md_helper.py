@@ -1,8 +1,9 @@
-from PIL.Image import Image
+from PIL.Image import Image, open
 import torch
 from MoondreamTorch.moondream import MoondreamConfig, MoondreamModel, text_encoder
 from MoondreamTorch.weights import load_weights_into_model
 from typing import List, Tuple
+import io
 
 class EncodedImage:
     pos: int
@@ -33,9 +34,16 @@ class MoondreamHelper:
         else:
             return torch.flatten(self.model._run_vision_encoder(query))
 
-    def gen_image_embed(self, image: Image):
-        return torch.flatten(self.model._run_vision_encoder(image))
+    def gen_image_embed(self, image: Image | bytes):
+        print("embed")
+        
+        if not isinstance(image, Image):
+            image = open(io.BytesIO(image.as_py()))
+            print("converted")
 
+        embed = torch.flatten(self.model._run_vision_encoder(image)).detach().numpy()
+        return embed
+        
     def encode_image(self, image: Image | torch.Tensor): # Accepts the reconstructed vector from DB created by method above this.
         if image.type() == Image:
             return self.model.encode_image(image)
