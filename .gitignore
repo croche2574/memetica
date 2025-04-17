@@ -3,4 +3,5 @@ Include/
 Scripts/
 models/
 ingest/
+db/
 __pycache__/

@@ -1,36 +1,25 @@
 import lancedb
 from meme_schema import Meme
 import os
-from tqdm import tqdm
+import pandas as pd
+from fastapi import FastAPI
+from db_helper import load_from_folder
 
 db_uri = './db/memetica-db'
 model_uri= './models/moondream-2b-int8.mf'
 weights_uri= './models/model.safetensors'
+images_folder = os.path.join(os.getcwd(), "ingest")
 
 db = lancedb.connect(db_uri)
+tbl = db.create_table('memes', schema=Meme, exist_ok=True)
 
-tbl = db.create_table('memes', schema=Meme, exist_ok=True, mode='overwrite')
+app = FastAPI()
 
-def image_loader():
-    current_dir = os.getcwd()
-    images_folder = os.path.join(current_dir, "ingest")
+@app.get("/memes/check_ingest")
+async def check_folder():
+    return {"response": load_from_folder(tbl, images_folder)}
 
 
-    image_files = [filename for filename in os.listdir(images_folder)
-        if filename.endswith((".png", ".jpg", ".jpeg"))]
-    if len(image_files) > 1:
-        for filename in tqdm(image_files, desc="loading images"):
-            image_path = os.path.join(images_folder, filename)
-            print(image_path)
 
-            with open(image_path, 'rb') as f:
-                yield Meme(image_bytes=f.read())
-    elif len(image_files) == 1:
-        image_path = os.path.join(images_folder, image_files[0])
-        print(image_path)
-        with open(image_path, 'rb') as f:
-            yield [Meme(image_bytes=f.read())]
-            
-
-tbl.add(image_loader())
-
+df = tbl.to_pandas()
+print(df.to_json())
