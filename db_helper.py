@@ -36,6 +36,6 @@ def load_from_folder(tbl: Table, path: str) -> str:
 
     if len(image_files) > 0:
         tbl.add(image_loader(image_files, path))
-        return ("Loaded " + str(len(image_files)) + " memes from " + path)
+        return ('Loaded %s memes from %s' % (str(len(image_files)), path))
     else:
         return "No new memes found."
