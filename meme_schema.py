@@ -2,9 +2,14 @@ from pydantic import BaseModel
 from lancedb.pydantic import Vector, LanceModel
 from typing import List, Optional
 import md_embedder
-import json
 from PIL.Image import Image, open
-import io
+import io, base64, json
+
+class BytesEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, bytes):
+            return base64.b64encode(o).decode()
+        return super().default(o)
 
 from lancedb.embeddings import EmbeddingFunctionRegistry
 
@@ -33,7 +38,7 @@ class Meme(LanceModel):
             "img": self.image_bytes,
             "literal_caption": self.literal_capt.caption,
             "conceptual_caption": self.conceptual_capt.caption
-        })
+        }, cls=BytesEncoder)
 
     @property
     def image(self) -> Image:
