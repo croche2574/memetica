@@ -4,4 +4,9 @@ Scripts/
 models/
 ingest/
 db/
-__pycache__/
+test_memes/
+__pycache__/meme_schema.cpython-310.pyc
+__pycache__/md_helper.cpython-310.pyc
+__pycache__/db_helper.cpython-310.pyc
+__pycache__/lance_schema.cpython-310.pyc
+__pycache__/md_embedder.cpython-310.pyc
