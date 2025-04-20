@@ -31,7 +31,7 @@ class MoondreamHelper:
                 torch.tensor([[question_tokens]], device=self.model.device),
                 self.model.text,
             )
-            return torch.flatten(question_emb)
+            return torch.flatten(question_emb).detach().numpy()
         else:
             return torch.flatten(self.model._run_vision_encoder(query))
 

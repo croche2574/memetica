@@ -26,11 +26,8 @@ class ConceptualCaption(BaseModel):
     caption: str = md.SourceField()
     vector: Vector(md.ndims()['text']) = md.VectorField(default=None)
 
-class Metadata(BaseModel):
-    timestamp: datetime
-
 class Meme(LanceModel):
-    metadata: Metadata = Metadata(timestamp=datetime.now())
+    timestamp: datetime = datetime.now()
     image_bytes: bytes = md.SourceField()
     image_vector: Vector(md.ndims()['image']) = md.VectorField(default=None)
     literal_capt: Optional[LiteralCaption] = None
