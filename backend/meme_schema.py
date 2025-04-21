@@ -38,6 +38,7 @@ class Meme(LanceModel):
     def json(self) -> str:
         return json.dumps({
             "img": self.image_bytes,
+            "created": self.timestamp.isoformat(),
             "literal_caption": self.literal_capt.caption,
             "conceptual_caption": self.conceptual_capt.caption
         }, cls=BytesEncoder)

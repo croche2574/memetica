@@ -23,9 +23,9 @@ app = FastAPI()
 async def check_folder():
     return {"response": load_from_folder(tbl, images_folder)}
 
+@app.get("/memes/")
+async def query_memes(query = f"timestamp <= TIMESTAMP '{datetime.now().isoformat()}'", limit = 10):
+    return [m.json for m in tbl.search().where(query).limit(limit).to_pydantic(Meme)]
+
 print(asyncio.run(check_folder()))
-
-time = datetime.now()
-
-#print(tbl.to_pandas()["metadata"][0]["timestamp"])
-memes = tbl.search().where(f"timestamp <= TIMESTAMP '{time.isoformat()}'").to_pydantic(Meme)
+print(asyncio.run(query_memes()))
