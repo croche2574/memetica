@@ -1,18 +1,18 @@
 {
   "name": "frontend",
-  "private": true,
-  "version": "0.0.0",
+  "module": "index.ts",
   "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
   },
   "dependencies": {
-    "preact": "^10.26.4"
-  },
-  "devDependencies": {
-    "@preact/preset-vite": "^2.10.1",
-    "vite": "^6.3.1"
+    "@picocss/pico": "^2.1.1",
+    "preact": "^10.26.5",
+    "react": "npm:@preact/compat",
+    "react-dom": "npm:@preact/compat"
   }
 }
