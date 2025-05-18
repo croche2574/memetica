@@ -1,0 +1,14 @@
+Lib/
+Include/
+Scripts/
+models/
+ingest/
+db/
+test_memes/
+.venv/
+frontend/node_modules
+__pycache__/meme_schema.cpython-310.pyc
+__pycache__/md_helper.cpython-310.pyc
+__pycache__/db_helper.cpython-310.pyc
+__pycache__/lance_schema.cpython-310.pyc
+__pycache__/md_embedder.cpython-310.pyc
