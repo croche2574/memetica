@@ -1,7 +1,6 @@
 import lancedb
 from meme_schema import Meme
 import os
-import pandas as pd
 from fastapi import FastAPI
 from db_helper import load_from_folder
 import asyncio
@@ -24,7 +23,7 @@ async def check_folder():
     return {"response": load_from_folder(tbl, images_folder)}
 
 @app.get("/memes/")
-async def query_memes(query = f"timestamp <= TIMESTAMP '{datetime.now().isoformat()}'", limit = 10):
+async def query_memes(query: str = f"timestamp <= TIMESTAMP '{datetime.now().isoformat()}'", limit: int = 10):
     return [m.json for m in tbl.search().where(query).limit(limit).to_pydantic(Meme)]
 
 print(asyncio.run(check_folder()))
