@@ -29,7 +29,7 @@ class ConceptualCaption(BaseModel):
 
 class Meme(LanceModel):
     timestamp: datetime = datetime.now()
-    image_bytes: pa.BinaryScalar = md.SourceField()
+    image_bytes: bytes = md.SourceField()
     image_vector: Vector(md.ndims()['image']) = md.VectorField(default=None)
     literal_capt: LiteralCaption
     conceptual_capt: ConceptualCaption
